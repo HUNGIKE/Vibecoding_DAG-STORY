@@ -3,7 +3,6 @@ window.STORY_DETECTIVE = {
   subtitle: "19th-century London · Detective Jack Harrow and his assistant Clara Vale",
   startNode: "N1",
   endNodes: ["N26", "N27", "N28", "N29", "N30"],
-  layers: [["N1"], ["N2", "N3", "N4"], ["N5", "N6", "N7", "N8", "N9"], ["N10", "N11", "N12", "N13", "N14", "N15"], ["N16", "N17", "N18", "N19", "N20"], ["N21", "N22", "N23", "N24", "N25"], ["N26", "N27", "N28", "N29", "N30"]],
   nodes: [
     { id: "N1", text: `1891 年的 Holborn 被濃霧與煤煙壓得發沉。偵探 Jack Harrow 站在事務所窗邊，手裡夾著失蹤銀行職員 Edwin Mercer 的照片；Clara Vale 則在桌前攤開一封未寫完的信。信上最後一句寫著：『黑色帳本不該被任何人看見。』`, choices: [{ to: "N2", text: "讓 Jack 與 Clara 先檢查信件與私人物品" }, { to: "N3", text: "讓他們前往 Edwin 的住處調查" }, { to: "N4", text: "讓他們直接去銀行詢問同事" }] },
     { id: "N2", text: `Clara 發現信紙邊緣沾著煤灰，還有一絲上流社會香水味。Jack 判斷 Edwin 最近接觸的人不只是銀行同事。`, choices: [{ to: "N5", text: "追查香水來源" }, { to: "N6", text: "分析煤灰可能來自哪一區" }, { to: "N7", text: "檢查火車票與交通紀錄" }] },

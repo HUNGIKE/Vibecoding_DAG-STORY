@@ -68,14 +68,10 @@ function createStoryEngine() {
     storyText: document.getElementById("storyText"),
     choicesBox: document.getElementById("choicesBox"),
     endText: document.getElementById("endText"),
-    pathText: document.getElementById("pathText"),
     restartBtn: document.getElementById("restartBtn"),
     backBtn: document.getElementById("backBtn"),
-    graphCanvas: document.getElementById("graphCanvas"),
-    statusBox: document.getElementById("statusBox")
   };
 
-  const graphCtx = els.graphCanvas.getContext("2d");
 
   function nodeMap() {
     return Object.fromEntries(state.storyData.nodes.map((node) => [node.id, node]));
@@ -110,84 +106,6 @@ function createStoryEngine() {
     render();
   }
 
-  function drawGraph() {
-    const { storyData, currentNodeId, history, graphPositions } = state;
-    graphCtx.clearRect(0, 0, els.graphCanvas.width, els.graphCanvas.height);
-
-    const left = 90;
-    const right = els.graphCanvas.width - 90;
-    const top = 60;
-    const bottom = els.graphCanvas.height - 60;
-    const layerGap = storyData.layers.length <= 1 ? 0 : (right - left) / (storyData.layers.length - 1);
-
-    Object.keys(graphPositions).forEach((key) => delete graphPositions[key]);
-
-    storyData.layers.forEach((layer, layerIndex) => {
-      const x = left + layerGap * layerIndex;
-      const verticalGap = layer.length <= 1 ? 0 : (bottom - top) / (layer.length - 1);
-      layer.forEach((nodeId, index) => {
-        graphPositions[nodeId] = {
-          x,
-          y: layer.length <= 1 ? (top + bottom) / 2 : top + verticalGap * index
-        };
-      });
-    });
-
-    storyData.nodes.forEach((node) => {
-      const from = graphPositions[node.id];
-      if (!from) return;
-      node.choices.forEach((choice) => {
-        const to = graphPositions[choice.to];
-        if (!to) return;
-        const angle = Math.atan2(to.y - from.y, to.x - from.x);
-        const r = 20;
-        graphCtx.beginPath();
-        graphCtx.moveTo(from.x + Math.cos(angle) * r, from.y + Math.sin(angle) * r);
-        graphCtx.lineTo(to.x - Math.cos(angle) * r, to.y - Math.sin(angle) * r);
-        graphCtx.strokeStyle = "#475569";
-        graphCtx.lineWidth = 1.2;
-        graphCtx.stroke();
-      });
-    });
-
-    storyData.nodes.forEach((node) => {
-      const pos = graphPositions[node.id];
-      if (!pos) return;
-      const isCurrent = node.id === currentNodeId;
-      const isEnd = storyData.endNodes.includes(node.id);
-      const isVisited = history.includes(node.id);
-
-      graphCtx.beginPath();
-      graphCtx.arc(pos.x, pos.y, 20, 0, Math.PI * 2);
-      graphCtx.fillStyle = isCurrent ? "#fde68a" : isEnd ? "#fecaca" : isVisited ? "#86efac" : "#bfdbfe";
-      graphCtx.fill();
-      graphCtx.strokeStyle = "#1e293b";
-      graphCtx.lineWidth = isCurrent ? 3 : 1.5;
-      graphCtx.stroke();
-      graphCtx.fillStyle = "#0f172a";
-      graphCtx.font = "12px Arial";
-      graphCtx.textAlign = "center";
-      graphCtx.textBaseline = "middle";
-      graphCtx.fillText(node.id, pos.x, pos.y);
-    });
-  }
-
-  function renderStatus() {
-    const validation = validateStoryData(state.storyData);
-    const tests = runSmokeTests(state.storyData);
-    const passed = tests.filter((test) => test.pass).length;
-    els.statusBox.className = validation.errors.length === 0 && passed === tests.length ? "status ok" : "status error";
-    els.statusBox.textContent = [
-      `Validation errors: ${validation.errors.length}`,
-      `Validation warnings: ${validation.warnings.length}`,
-      `Smoke tests passed: ${passed}/${tests.length}`,
-      "",
-      ...validation.errors.map((e) => `ERROR: ${e}`),
-      ...validation.warnings.map((w) => `WARN: ${w}`),
-      "",
-      ...tests.map((t) => `[${t.pass ? "PASS" : "FAIL"}] ${t.name}`)
-    ].join("\n");
-  }
 
   function render() {
     const map = nodeMap();
@@ -214,8 +132,8 @@ function createStoryEngine() {
     els.pathText.textContent = "路徑：" + state.history.join(" → ");
     els.backBtn.disabled = state.history.length <= 1;
     els.backBtn.style.opacity = state.history.length <= 1 ? "0.5" : "1";
-    renderStatus();
-    drawGraph();
+    // renderStatus();
+    // drawGraph();
   }
 
   Object.entries(stories).forEach(([key, story]) => {
@@ -232,5 +150,3 @@ function createStoryEngine() {
   return { render, setStory };
 }
 
-const engine = createStoryEngine();
-engine.render();

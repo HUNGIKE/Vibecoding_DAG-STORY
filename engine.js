@@ -2,6 +2,7 @@ const stories = {
   
   detective: window.STORY_DETECTIVE,
   vampire: window.STORY_VAMPIRE,
+  snowMountain: window.STORY_SNOW_MOUNTAIN,
 };
 const _initStory = stories.detective;
 const _initStoryKey = "detective";

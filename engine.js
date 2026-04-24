@@ -3,44 +3,6 @@ const stories = {
   vampire: window.STORY_VAMPIRE
 };
 
-function validateStoryData(storyData) {
-  const errors = [];
-  const warnings = [];
-  const nodeIds = new Set();
-  const layeredIds = new Set();
-
-  if (!storyData || typeof storyData !== "object") {
-    return { errors: ["storyData must be an object"], warnings };
-  }
-
-  for (const node of storyData.nodes || []) {
-    if (nodeIds.has(node.id)) errors.push(`Duplicate node id: ${node.id}`);
-    nodeIds.add(node.id);
-    if (!Array.isArray(node.choices)) errors.push(`Node ${node.id} choices must be an array`);
-  }
-
-  if (!nodeIds.has(storyData.startNode)) errors.push(`Missing startNode: ${storyData.startNode}`);
-  for (const endNode of storyData.endNodes || []) {
-    if (!nodeIds.has(endNode)) errors.push(`Missing endNode: ${endNode}`);
-  }
-
-  for (const layer of storyData.layers || []) {
-    for (const nodeId of layer) {
-      layeredIds.add(nodeId);
-      if (!nodeIds.has(nodeId)) errors.push(`Layer references missing node: ${nodeId}`);
-    }
-  }
-
-  for (const node of storyData.nodes || []) {
-    if (!layeredIds.has(node.id)) warnings.push(`Node ${node.id} is not in layers`);
-    for (const choice of node.choices || []) {
-      if (!nodeIds.has(choice.to)) errors.push(`Node ${node.id} links to missing node: ${choice.to}`);
-    }
-  }
-
-  return { errors, warnings };
-}
-
 function runSmokeTests(storyData) {
   const nodeMap = Object.fromEntries(storyData.nodes.map((node) => [node.id, node]));
   return [

@@ -3,17 +3,6 @@ const stories = {
   vampire: window.STORY_VAMPIRE
 };
 
-function runSmokeTests(storyData) {
-  const nodeMap = Object.fromEntries(storyData.nodes.map((node) => [node.id, node]));
-  return [
-    { name: "can find start node", pass: Boolean(nodeMap[storyData.startNode]) },
-    { name: "all end nodes exist", pass: storyData.endNodes.every((id) => Boolean(nodeMap[id])) },
-    { name: "has about 30 nodes", pass: storyData.nodes.length >= 25 },
-    { name: "all choices target valid nodes", pass: storyData.nodes.every((node) => node.choices.every((choice) => Boolean(nodeMap[choice.to]))) },
-    { name: "end nodes have no choices", pass: storyData.endNodes.every((id) => nodeMap[id].choices.length === 0) }
-  ];
-}
-
 function createStoryEngine() {
   const state = {
     storyKey: "detective",

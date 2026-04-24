@@ -129,11 +129,8 @@ function createStoryEngine() {
       });
     }
 
-    els.pathText.textContent = "路徑：" + state.history.join(" → ");
     els.backBtn.disabled = state.history.length <= 1;
     els.backBtn.style.opacity = state.history.length <= 1 ? "0.5" : "1";
-    // renderStatus();
-    // drawGraph();
   }
 
   Object.entries(stories).forEach(([key, story]) => {

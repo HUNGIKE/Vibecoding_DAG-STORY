@@ -3,8 +3,8 @@ const stories = {
   detective: window.STORY_DETECTIVE,
   vampire: window.STORY_VAMPIRE,
 };
-_initStory = stories.detective;
-_initStoryKey = "detective";
+const _initStory = stories.detective;
+const _initStoryKey = "detective";
 
 function createStoryEngine() {
   const state = {

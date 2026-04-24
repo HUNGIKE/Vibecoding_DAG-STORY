@@ -1,14 +1,17 @@
 const stories = {
+  
   detective: window.STORY_DETECTIVE,
-  vampire: window.STORY_VAMPIRE
+  vampire: window.STORY_VAMPIRE,
 };
+_initStory = stories.detective;
+_initStoryKey = "detective";
 
 function createStoryEngine() {
   const state = {
-    storyKey: "detective",
-    storyData: stories.detective,
-    currentNodeId: stories.detective.startNode,
-    history: [stories.detective.startNode],
+    storyKey: _initStoryKey,
+    storyData: _initStory,
+    currentNodeId: _initStory.startNode,
+    history: [_initStory.startNode],
     graphPositions: {}
   };
 
